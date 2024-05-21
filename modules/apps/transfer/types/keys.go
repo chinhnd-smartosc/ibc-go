@@ -8,15 +8,15 @@ import (
 )
 
 const (
-	// ModuleName defines the IBC transfer name
-	ModuleName = "transfer"
+	// ModuleName defines the IBC ordered transfer name
+	ModuleName = "orderedtransfer"
 
 	// Version defines the current version the IBC tranfer
 	// module supports
-	Version = "ics20-1"
+	Version = "ordered-ics20-1"
 
 	// PortID is the default port id that transfer module binds to
-	PortID = "transfer"
+	PortID = "orderedtransfer"
 
 	// StoreKey is the store key string for IBC transfer
 	StoreKey = ModuleName
@@ -28,7 +28,7 @@ const (
 	QuerierRoute = ModuleName
 
 	// DenomPrefix is the prefix used for internal SDK coin representation.
-	DenomPrefix = "ibc"
+	DenomPrefix = "orderedibc"
 
 	KeyTotalEscrowPrefix = "totalEscrowForDenom"
 

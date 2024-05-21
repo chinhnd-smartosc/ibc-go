@@ -37,7 +37,7 @@ func NewIBCModule(k keeper.Keeper) IBCModule {
 }
 
 // ValidateTransferChannelParams does validation of a newly created transfer channel. A transfer
-// channel must be UNORDERED, use the correct port (by default 'transfer'), and use the current
+// channel must use the correct port ('ordered-transfer'), and use the current
 // supported version. Only 2^32 channels are allowed to be created.
 func ValidateTransferChannelParams(
 	ctx sdk.Context,
@@ -55,9 +55,9 @@ func ValidateTransferChannelParams(
 	if channelSequence > uint64(math.MaxUint32) {
 		return errorsmod.Wrapf(types.ErrMaxTransferChannels, "channel sequence %d is greater than max allowed transfer channels %d", channelSequence, uint64(math.MaxUint32))
 	}
-	if order != channeltypes.UNORDERED {
-		return errorsmod.Wrapf(channeltypes.ErrInvalidChannelOrdering, "expected %s channel, got %s ", channeltypes.UNORDERED, order)
-	}
+	// if order != channeltypes.UNORDERED {
+	// 	return errorsmod.Wrapf(channeltypes.ErrInvalidChannelOrdering, "expected %s channel, got %s ", channeltypes.UNORDERED, order)
+	// }
 
 	// Require portID is the portID transfer module is bound to
 	boundPort := transferkeeper.GetPort(ctx)

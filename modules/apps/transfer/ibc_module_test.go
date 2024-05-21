@@ -41,11 +41,6 @@ func (suite *TransferTestSuite) TestOnChanOpenInit() {
 			}, false,
 		},
 		{
-			"invalid order - ORDERED", func() {
-				channel.Ordering = channeltypes.ORDERED
-			}, false,
-		},
-		{
 			"invalid port ID", func() {
 				path.EndpointA.ChannelConfig.PortID = ibctesting.MockPort
 			}, false,
@@ -71,11 +66,12 @@ func (suite *TransferTestSuite) TestOnChanOpenInit() {
 			path = ibctesting.NewTransferPath(suite.chainA, suite.chainB)
 			suite.coordinator.SetupConnections(path)
 			path.EndpointA.ChannelID = ibctesting.FirstChannelID
+			path.SetChannelOrdered()
 
 			counterparty = channeltypes.NewCounterparty(path.EndpointB.ChannelConfig.PortID, path.EndpointB.ChannelID)
 			channel = &channeltypes.Channel{
 				State:          channeltypes.INIT,
-				Ordering:       channeltypes.UNORDERED,
+				Ordering:       channeltypes.ORDERED,
 				Counterparty:   counterparty,
 				ConnectionHops: []string{path.EndpointA.ConnectionID},
 				Version:        types.Version,
@@ -132,11 +128,6 @@ func (suite *TransferTestSuite) TestOnChanOpenTry() {
 			}, false,
 		},
 		{
-			"invalid order - ORDERED", func() {
-				channel.Ordering = channeltypes.ORDERED
-			}, false,
-		},
-		{
 			"invalid port ID", func() {
 				path.EndpointA.ChannelConfig.PortID = ibctesting.MockPort
 			}, false,
@@ -157,11 +148,12 @@ func (suite *TransferTestSuite) TestOnChanOpenTry() {
 			path = ibctesting.NewTransferPath(suite.chainA, suite.chainB)
 			suite.coordinator.SetupConnections(path)
 			path.EndpointA.ChannelID = ibctesting.FirstChannelID
+			path.SetChannelOrdered()
 
 			counterparty = channeltypes.NewCounterparty(path.EndpointB.ChannelConfig.PortID, path.EndpointB.ChannelID)
 			channel = &channeltypes.Channel{
 				State:          channeltypes.TRYOPEN,
-				Ordering:       channeltypes.UNORDERED,
+				Ordering:       channeltypes.ORDERED,
 				Counterparty:   counterparty,
 				ConnectionHops: []string{path.EndpointA.ConnectionID},
 				Version:        types.Version,
@@ -222,6 +214,7 @@ func (suite *TransferTestSuite) TestOnChanOpenAck() {
 			suite.coordinator.SetupConnections(path)
 			path.EndpointA.ChannelID = ibctesting.FirstChannelID
 			counterpartyVersion = types.Version
+			path.SetChannelOrdered()
 
 			module, _, err := suite.chainA.App.GetIBCKeeper().PortKeeper.LookupModuleByPort(suite.chainA.GetContext(), ibctesting.TransferPort)
 			suite.Require().NoError(err)
